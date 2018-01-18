@@ -1,0 +1,30 @@
+{
+  "name": "mrcnpdlk/pfc-adapter",
+  "description": "PhpFastCache Adapter",
+  "keywords": [
+    "phpfastcache",
+    "redis"
+  ],
+  "type": "library",
+  "license": "MIT",
+  "authors": [
+    {
+      "name": "Marcin Pudełek",
+      "email": "marcin@pudelek.org.pl",
+      "role": "Developer"
+    }
+  ],
+  "minimum-stability": "stable",
+  "prefer-stable": true,
+  "require": {
+    "php": ">=7.0",
+    "phpfastcache/phpfastcache": "~6.0.8"
+  },
+  "require-dev": {
+  },
+  "autoload": {
+    "psr-4": {
+      "mrcnpdlk\\Lib\\PfcAdapter\\": "src/"
+    }
+  }
+}
