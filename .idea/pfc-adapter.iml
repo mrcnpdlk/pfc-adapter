@@ -10,21 +10,5 @@
     </content>
     <orderEntry type="inheritedJdk" />
     <orderEntry type="sourceFolder" forTests="false" />
-    <orderEntry type="module-library">
-      <library name="PHP" type="php">
-        <CLASSES>
-          <root url="file://$MODULE_DIR$/vendor/composer" />
-          <root url="file://$MODULE_DIR$/vendor/phpfastcache/phpfastcache" />
-          <root url="file://$MODULE_DIR$/vendor/psr/cache" />
-          <root url="file://$MODULE_DIR$/vendor/psr/simple-cache" />
-        </CLASSES>
-        <SOURCES>
-          <root url="file://$MODULE_DIR$/vendor/composer" />
-          <root url="file://$MODULE_DIR$/vendor/phpfastcache/phpfastcache" />
-          <root url="file://$MODULE_DIR$/vendor/psr/cache" />
-          <root url="file://$MODULE_DIR$/vendor/psr/simple-cache" />
-        </SOURCES>
-      </library>
-    </orderEntry>
   </component>
 </module>
