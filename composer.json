@@ -18,7 +18,7 @@
   "prefer-stable": true,
   "require": {
     "php": ">=7.0",
-    "phpfastcache/phpfastcache": "~6.0.8"
+    "phpfastcache/phpfastcache": "~6.1.2"
   },
   "require-dev": {
   },

@@ -4,20 +4,20 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "content-hash": "628aeed99ee643bb265ae7e0c0f40a0b",
+    "content-hash": "d8875fb14ae9357210836ad474ede184",
     "packages": [
         {
             "name": "phpfastcache/phpfastcache",
-            "version": "6.0.8",
+            "version": "6.1.2",
             "source": {
                 "type": "git",
                 "url": "https://github.com/PHPSocialNetwork/phpfastcache.git",
-                "reference": "606c29476bd21d907dcd535716d66b31aa999538"
+                "reference": "0a8acb7d6e80b84a6bfdd7f8fb011097b0ce2a15"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/PHPSocialNetwork/phpfastcache/zipball/606c29476bd21d907dcd535716d66b31aa999538",
-                "reference": "606c29476bd21d907dcd535716d66b31aa999538",
+                "url": "https://api.github.com/repos/PHPSocialNetwork/phpfastcache/zipball/0a8acb7d6e80b84a6bfdd7f8fb011097b0ce2a15",
+                "reference": "0a8acb7d6e80b84a6bfdd7f8fb011097b0ce2a15",
                 "shasum": ""
             },
             "require": {
@@ -100,7 +100,7 @@
                 "zend memory cache",
                 "zend server"
             ],
-            "time": "2017-12-15T22:11:25+00:00"
+            "time": "2018-03-23T20:31:49+00:00"
         },
         {
             "name": "psr/cache",
@@ -150,16 +150,16 @@
         },
         {
             "name": "psr/simple-cache",
-            "version": "1.0.0",
+            "version": "1.0.1",
             "source": {
                 "type": "git",
                 "url": "https://github.com/php-fig/simple-cache.git",
-                "reference": "753fa598e8f3b9966c886fe13f370baa45ef0e24"
+                "reference": "408d5eafb83c57f6365a3ca330ff23aa4a5fa39b"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/php-fig/simple-cache/zipball/753fa598e8f3b9966c886fe13f370baa45ef0e24",
-                "reference": "753fa598e8f3b9966c886fe13f370baa45ef0e24",
+                "url": "https://api.github.com/repos/php-fig/simple-cache/zipball/408d5eafb83c57f6365a3ca330ff23aa4a5fa39b",
+                "reference": "408d5eafb83c57f6365a3ca330ff23aa4a5fa39b",
                 "shasum": ""
             },
             "require": {
@@ -194,7 +194,7 @@
                 "psr-16",
                 "simple-cache"
             ],
-            "time": "2017-01-02T13:31:39+00:00"
+            "time": "2017-10-23T01:57:42+00:00"
         }
     ],
     "packages-dev": [],
