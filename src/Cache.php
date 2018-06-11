@@ -46,7 +46,7 @@ class Cache
     {
         $this->oCache      = $oCache ?? CacheManager::Redis();
         $this->projectHash = md5(__DIR__);
-        $this->defaultTtl  = $this->oCache->getConfig()->getOption('defaultTtl');
+        $this->defaultTtl  = $this->oCache->getConfig()->getDefaultTtl();
         $this->uniqueHash  = $uniqueHash;
     }
 
