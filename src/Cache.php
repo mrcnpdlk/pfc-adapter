@@ -111,7 +111,12 @@ class Cache
         }
     }
 
-    public function genHash(array $tHashKeys)
+    /**
+     * @param array $tHashKeys
+     *
+     * @return string
+     */
+    public function genHash(array $tHashKeys): string
     {
         return md5(json_encode($tHashKeys));
     }
@@ -122,7 +127,7 @@ class Cache
      * @return $this
      * @throws \InvalidArgumentException
      */
-    public function clearCache($tTags)
+    public function clearCache($tTags): self
     {
         $tTags = (array)$tTags;
         $this->oCache->deleteItemsByTags($tTags);
@@ -134,7 +139,7 @@ class Cache
      * @return $this
      * @throws \InvalidArgumentException
      */
-    public function clearAllCache()
+    public function clearAllCache(): self
     {
         $this->oCache->deleteItemsByTag($this->projectHash);
 
