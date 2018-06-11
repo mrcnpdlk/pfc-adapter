@@ -1,4 +1,4 @@
-<?php
+<?php /** @noinspection MoreThanThreeArgumentsInspection */
 
 namespace mrcnpdlk\Lib\PfcAdapter;
 
@@ -29,25 +29,64 @@ class Cache
      * @var integer
      */
     private $defaultTtl;
+    /**
+     * Generate hash with project hash
+     *
+     * @var boolean
+     */
+    private $uniqueHash;
 
     /**
      * Cache constructor.
      *
      * @param \phpFastCache\Core\Pool\ExtendedCacheItemPoolInterface|null $oCache
+     * @param bool                                                        $uniqueHash
      */
-    public function __construct(ExtendedCacheItemPoolInterface $oCache = null)
+    public function __construct(ExtendedCacheItemPoolInterface $oCache = null, bool $uniqueHash = true)
     {
         $this->oCache      = $oCache ?? CacheManager::Redis();
         $this->projectHash = md5(__DIR__);
         $this->defaultTtl  = $this->oCache->getConfigOption('defaultTtl');
+        $this->uniqueHash  = $uniqueHash;
     }
 
     /**
-     * @return \phpFastCache\Core\Pool\ExtendedCacheItemPoolInterface
+     * @return $this
+     * @throws \InvalidArgumentException
      */
-    public function getHandler(): ExtendedCacheItemPoolInterface
+    public function clearAllCache(): self
     {
-        return $this->oCache;
+        $this->oCache->deleteItemsByTag($this->projectHash);
+
+        return $this;
+    }
+
+    /**
+     * @param string|array $tTags
+     *
+     * @return $this
+     * @throws \InvalidArgumentException
+     */
+    public function clearCache($tTags): self
+    {
+        $tTags = (array)$tTags;
+        $this->oCache->deleteItemsByTags($tTags);
+
+        return $this;
+    }/** @noinspection MoreThanThreeArgumentsInspection */
+
+    /**
+     * @param array $tHashKeys
+     *
+     * @return string
+     */
+    public function genHash(array $tHashKeys): string
+    {
+        if ($this->uniqueHash) {
+            return md5(json_encode(array_merge($tHashKeys, [$this->projectHash])));
+        }
+
+        return md5(json_encode($tHashKeys));
     }
 
     /**
@@ -56,6 +95,14 @@ class Cache
     public function get()
     {
         return $this->userData;
+    }
+
+    /**
+     * @return \phpFastCache\Core\Pool\ExtendedCacheItemPoolInterface
+     */
+    public function getHandler(): ExtendedCacheItemPoolInterface
+    {
+        return $this->oCache;
     }
 
     /**
@@ -71,7 +118,7 @@ class Cache
         $tHashKeys = null,
         $tRedisTags = null,
         int $iCache = null
-    ) {
+    ): self {
         try {
             $tRedisTags = (array)$tRedisTags;
             $tHashKeys  = (array)$tHashKeys;
@@ -109,40 +156,5 @@ class Cache
 
             return $this;
         }
-    }
-
-    /**
-     * @param array $tHashKeys
-     *
-     * @return string
-     */
-    public function genHash(array $tHashKeys): string
-    {
-        return md5(json_encode($tHashKeys));
-    }
-
-    /**
-     * @param string|array $tTags
-     *
-     * @return $this
-     * @throws \InvalidArgumentException
-     */
-    public function clearCache($tTags): self
-    {
-        $tTags = (array)$tTags;
-        $this->oCache->deleteItemsByTags($tTags);
-
-        return $this;
-    }
-
-    /**
-     * @return $this
-     * @throws \InvalidArgumentException
-     */
-    public function clearAllCache(): self
-    {
-        $this->oCache->deleteItemsByTag($this->projectHash);
-
-        return $this;
     }
 }
