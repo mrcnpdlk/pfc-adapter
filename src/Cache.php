@@ -3,8 +3,8 @@
 namespace mrcnpdlk\Lib\PfcAdapter;
 
 
-use phpFastCache\CacheManager;
-use phpFastCache\Core\Pool\ExtendedCacheItemPoolInterface;
+use Phpfastcache\CacheManager;
+use Phpfastcache\Core\Pool\ExtendedCacheItemPoolInterface;
 
 /**
  * Class Cache
@@ -14,7 +14,7 @@ use phpFastCache\Core\Pool\ExtendedCacheItemPoolInterface;
 class Cache
 {
     /**
-     * @var \phpFastCache\Core\Pool\ExtendedCacheItemPoolInterface
+     * @var \Phpfastcache\Core\Pool\ExtendedCacheItemPoolInterface
      */
     private $oCache;
     /**
@@ -39,14 +39,14 @@ class Cache
     /**
      * Cache constructor.
      *
-     * @param \phpFastCache\Core\Pool\ExtendedCacheItemPoolInterface|null $oCache
+     * @param \Phpfastcache\Core\Pool\ExtendedCacheItemPoolInterface|null $oCache
      * @param bool                                                        $uniqueHash
      */
     public function __construct(ExtendedCacheItemPoolInterface $oCache = null, bool $uniqueHash = true)
     {
         $this->oCache      = $oCache ?? CacheManager::Redis();
         $this->projectHash = md5(__DIR__);
-        $this->defaultTtl  = $this->oCache->getConfigOption('defaultTtl');
+        $this->defaultTtl  = $this->oCache->getConfig()->getOption('defaultTtl');
         $this->uniqueHash  = $uniqueHash;
     }
 
@@ -98,7 +98,7 @@ class Cache
     }
 
     /**
-     * @return \phpFastCache\Core\Pool\ExtendedCacheItemPoolInterface
+     * @return \Phpfastcache\Core\Pool\ExtendedCacheItemPoolInterface
      */
     public function getHandler(): ExtendedCacheItemPoolInterface
     {
