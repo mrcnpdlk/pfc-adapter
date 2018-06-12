@@ -5,6 +5,8 @@ namespace mrcnpdlk\Lib\PfcAdapter;
 
 use Phpfastcache\CacheManager;
 use Phpfastcache\Core\Pool\ExtendedCacheItemPoolInterface;
+use Psr\Log\LoggerInterface;
+use Psr\Log\NullLogger;
 
 /**
  * Class Cache
@@ -35,6 +37,10 @@ class Cache
      * @var boolean
      */
     private $uniqueHash;
+    /**
+     * @var \Psr\Log\NullLogger | LoggerInterface
+     */
+    private $logger;
 
     /**
      * Cache constructor.
@@ -48,6 +54,7 @@ class Cache
         $this->projectHash = md5(__DIR__);
         $this->defaultTtl  = $this->oCache->getConfig()->getDefaultTtl();
         $this->uniqueHash  = $uniqueHash;
+        $this->logger      = new NullLogger();
     }
 
     /**
@@ -73,7 +80,7 @@ class Cache
         $this->oCache->deleteItemsByTags($tTags);
 
         return $this;
-    }/** @noinspection MoreThanThreeArgumentsInspection */
+    }
 
     /**
      * @param array $tHashKeys
@@ -87,7 +94,7 @@ class Cache
         }
 
         return md5(json_encode($tHashKeys));
-    }
+    }/** @noinspection MoreThanThreeArgumentsInspection */
 
     /**
      * @return mixed
@@ -136,6 +143,7 @@ class Cache
                 $tRedisTags = array_unique(array_merge([$this->projectHash], $tRedisTags));
 
                 if (!$oCachedItem->isHit() || $oCachedItem->get() === null) {
+                    $this->logger->debug(sprintf('CACHE [%s]: old or NULL, reset [ttl=%s]', $hashKey, $iCache));
                     $this->userData = $inputDataFunction();
                     $oCachedItem
                         ->set($this->userData)
@@ -144,9 +152,11 @@ class Cache
                     ;
                     $this->oCache->save($oCachedItem);
                 } else {
+                    $this->logger->debug(sprintf('CACHE [%s]: getting from cache', $hashKey));
                     $this->userData = $oCachedItem->get();
                 }
             } else {
+                $this->logger->debug(sprintf('CACHE [%s]: cache omitted [ttl=0]', $hashKey));
                 $this->userData = $inputDataFunction();
             }
 
@@ -156,5 +166,17 @@ class Cache
 
             return $this;
         }
+    }
+
+    /**
+     * @param \Psr\Log\LoggerInterface $oLogger
+     *
+     * @return $this
+     */
+    public function setLogger(LoggerInterface $oLogger): self
+    {
+        $this->logger = $oLogger;
+
+        return $this;
     }
 }
