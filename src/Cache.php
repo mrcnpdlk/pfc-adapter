@@ -3,6 +3,7 @@
 namespace mrcnpdlk\Lib\PfcAdapter;
 
 
+use InvalidArgumentException;
 use Phpfastcache\CacheManager;
 use Phpfastcache\Core\Pool\ExtendedCacheItemPoolInterface;
 use Psr\Log\LoggerInterface;
@@ -38,9 +39,13 @@ class Cache
      */
     private $uniqueHash;
     /**
-     * @var \Psr\Log\NullLogger | LoggerInterface
+     * @var LoggerInterface
      */
     private $logger;
+    /**
+     * @var boolean
+     */
+    private $isEnabled;
 
     /**
      * Cache constructor.
@@ -55,6 +60,7 @@ class Cache
         $this->defaultTtl  = $this->oCache->getConfig()->getDefaultTtl();
         $this->uniqueHash  = $uniqueHash;
         $this->logger      = new NullLogger();
+        $this->isEnabled   = true;
     }
 
     /**
@@ -69,7 +75,7 @@ class Cache
     }
 
     /**
-     * @param string|array $tTags
+     * @param string|string[] $tTags
      *
      * @return $this
      * @throws \InvalidArgumentException
@@ -94,7 +100,7 @@ class Cache
         }
 
         return md5(json_encode($tHashKeys));
-    }/** @noinspection MoreThanThreeArgumentsInspection */
+    }
 
     /**
      * @return mixed
@@ -105,7 +111,7 @@ class Cache
     }
 
     /**
-     * @return \Phpfastcache\Core\Pool\ExtendedCacheItemPoolInterface
+     * @return ExtendedCacheItemPoolInterface
      */
     public function getHandler(): ExtendedCacheItemPoolInterface
     {
@@ -113,31 +119,34 @@ class Cache
     }
 
     /**
-     * @param callable $inputDataFunction
-     * @param null     $tHashKeys
-     * @param null     $tRedisTags
-     * @param int|null $iCache
+     * @param callable        $inputDataFunction Callback function using when invalid cache
+     * @param string|string[] $tHashKeys
+     * @param string|string[] $tRedisTags
+     * @param int|null        $iCache            Cache validity in seconds
      *
      * @return $this
      */
     public function set(
         callable $inputDataFunction,
-        $tHashKeys = null,
-        $tRedisTags = null,
+        $tHashKeys,
+        $tRedisTags,
         int $iCache = null
     ): self {
         try {
+            if ($tHashKeys === [] || $tHashKeys === null || trim($tHashKeys) === '') {
+                throw new InvalidArgumentException('HashKey is required!', 1);
+            }
+
             $tRedisTags = (array)$tRedisTags;
             $tHashKeys  = (array)$tHashKeys;
             $iCache     = $iCache ?? $this->defaultTtl;
 
-            if (empty($tHashKeys)) {
-                throw new Exception('HashKey is required!', 1);
-            }
-
             $hashKey = $this->genHash($tHashKeys);
 
-            if ($iCache > 0) {
+            if ($this->isEnabled === false) {
+                $this->logger->debug(sprintf('CACHE [%s]: cache omitted [not enabled]', $hashKey));
+                $this->userData = $inputDataFunction();
+            } elseif ($iCache > 0) {
                 $oCachedItem = $this->oCache->getItem($hashKey);
                 //do każdego zapytania dajemy TAG związany z projektem
                 $tRedisTags = array_unique(array_merge([$this->projectHash], $tRedisTags));
@@ -162,10 +171,23 @@ class Cache
 
             return $this;
         } catch (\Exception $e) {
+            $this->logger->warning(sprintf('CACHE Error: %s. Using fallback function.', $e->getMessage()));
             $this->userData = $inputDataFunction();
 
             return $this;
         }
+    }
+
+    /**
+     * @param bool $isEnabled
+     *
+     * @return $this
+     */
+    public function setEnabled(bool $isEnabled = true): self
+    {
+        $this->isEnabled = $isEnabled;
+
+        return $this;
     }
 
     /**

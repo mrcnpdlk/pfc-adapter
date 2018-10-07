@@ -17,9 +17,10 @@
   "minimum-stability": "stable",
   "prefer-stable": true,
   "require": {
-    "php": ">=7.0",
-    "phpfastcache/phpfastcache": "~7.0.0",
-    "psr/log": "~1.0.2"
+    "php": ">=7.2",
+    "ext-json": "*",
+    "phpfastcache/phpfastcache": "^7.0",
+    "psr/log": "^1.0"
   },
   "require-dev": {
   },

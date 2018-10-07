@@ -1,29 +1,29 @@
 {
     "_readme": [
         "This file locks the dependencies of your project to a known state",
-        "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
+        "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "e43a4dc64af19c06f5f0e23a18d1ed44",
+    "content-hash": "0f4869836e40295dfc2054402e879a75",
     "packages": [
         {
             "name": "phpfastcache/phpfastcache",
-            "version": "7.0.0",
+            "version": "7.0.3",
             "source": {
                 "type": "git",
                 "url": "https://github.com/PHPSocialNetwork/phpfastcache.git",
-                "reference": "307a378f917ebd2c397638e6cd56b7f64c2a2c16"
+                "reference": "2b53685853ff7662faf8b314c22ee62801323e2e"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/PHPSocialNetwork/phpfastcache/zipball/307a378f917ebd2c397638e6cd56b7f64c2a2c16",
-                "reference": "307a378f917ebd2c397638e6cd56b7f64c2a2c16",
+                "url": "https://api.github.com/repos/PHPSocialNetwork/phpfastcache/zipball/2b53685853ff7662faf8b314c22ee62801323e2e",
+                "reference": "2b53685853ff7662faf8b314c22ee62801323e2e",
                 "shasum": ""
             },
             "require": {
                 "ext-json": "*",
                 "ext-mbstring": "*",
-                "php": "^7.0 || ^7.1 || ^7.2",
+                "php": ">=7.0",
                 "psr/cache": "~1.0.0",
                 "psr/simple-cache": "~1.0.0"
             },
@@ -104,7 +104,7 @@
                 "zend memory cache",
                 "zend server"
             ],
-            "time": "2018-05-27T00:05:11+00:00"
+            "time": "2018-09-05T20:45:26+00:00"
         },
         {
             "name": "psr/cache",
@@ -255,7 +255,8 @@
     "prefer-stable": true,
     "prefer-lowest": false,
     "platform": {
-        "php": ">=7.0"
+        "php": ">=7.2",
+        "ext-json": "*"
     },
     "platform-dev": []
 }
