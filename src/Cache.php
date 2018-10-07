@@ -133,7 +133,7 @@ class Cache
         int $iCache = null
     ): self {
         try {
-            if ($tHashKeys === [] || $tHashKeys === null || trim($tHashKeys) === '') {
+            if ($tHashKeys === [] || $tHashKeys === null || (\is_string($tHashKeys) && trim($tHashKeys) === '')) {
                 throw new InvalidArgumentException('HashKey is required!', 1);
             }
 
